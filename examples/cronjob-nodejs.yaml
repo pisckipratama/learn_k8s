@@ -1,0 +1,20 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cronjob-nodejs
+  labels:
+    name: cronjob-nodejs
+spec:
+  schedule: '* * * * *'
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: cronjob-nodejs
+          labels:
+            app: cronjob-nodejs
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: cronjob-nodejs
+              image: pisckitama/cronjob-nodejs

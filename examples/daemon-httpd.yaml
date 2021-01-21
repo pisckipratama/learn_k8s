@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: daemon-httpd
+  labels:
+    name: daemon-httpd
+spec:
+  selector:
+    matchLabels:
+      name: daemon-httpd
+  template:
+    metadata:
+      name: daemon-httpd
+      labels:
+        name: daemon-httpd
+    spec:
+      containers:
+        - name: httpd
+          image: httpd
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
+            timeoutSeconds: 1
