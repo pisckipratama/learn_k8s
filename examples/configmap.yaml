@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nodejs-env-config
+data:
+  APPLICATION: 'My Mantap APP'
+  AUTHOR: 'Piscki F. Pratama'
+  VERSION: '1.0.0'
+  PORT: '4021'
+  NODE_ENV: 'development'
+
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nodejs-env
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: nodejs-env
+  template:
+    metadata:
+      name: nodejs-env
+      labels:
+        name: nodejs-env
+    spec:
+      containers:
+        - name: nodejs-env
+          image: pisckitama/nodejs-env
+          ports:
+            - containerPort: 4021
+          envFrom:
+            - configMapRef:
+                name: nodejs-env-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-env-service
+spec:
+  type: NodePort
+  selector:
+    name: nodejs-env
+  ports:
+    - port: 4021
+      targetPort: 4021
+      nodePort: 30005

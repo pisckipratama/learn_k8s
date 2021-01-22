@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nodejs-restapi
+  labels:
+    name: nodejs-restapi
+spec:
+  containers:
+    - name: nodejs-restapi
+      image: pisckitama/nodejs-restapi
+      env:
+        - name: PORT
+          value: '5001'
+        - name: NODE_ENV
+          value: staging
