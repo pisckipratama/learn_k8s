@@ -5,7 +5,7 @@ metadata:
 data:
   APPLICATION: 'NodeJS RESTful API'
   AUTHOR: 'Piscki F. Pratama'
-  VERSION: '1.1'
+  VERSION: '1.3'
   PORT: '4021'
   NODE_ENV: 'production'
 
@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: nodejs-restapi
-          image: pisckitama/nodejs-restapi:1.1
+          image: pisckitama/nodejs-restapi:1.3
           ports:
             - containerPort: 4021
           envFrom:
