@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nodejs-env-config
+data:
+  APPLICATION: 'NodeJS RESTful API'
+  AUTHOR: 'Piscki F. Pratama'
+  VERSION: '1.1'
+  PORT: '4021'
+  NODE_ENV: 'production'
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-restapi
+  labels:
+    name: nodejs-restapi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: nodejs-restapi
+  template:
+    metadata:
+      name: nodejs-restapi
+      labels:
+        name: nodejs-restapi
+    spec:
+      containers:
+        - name: nodejs-restapi
+          image: pisckitama/nodejs-restapi:1.1
+          ports:
+            - containerPort: 4021
+          envFrom:
+            - configMapRef:
+                name: nodejs-env-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-restapi-service
+spec:
+  type: NodePort
+  selector:
+    name: nodejs-restapi
+  ports:
+    - port: 4021
+      targetPort: 4021
+      nodePort: 30001

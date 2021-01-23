@@ -8,6 +8,8 @@ app.get('/', (req, res) => {
   res.status(200).json({
     success: true,
     message: 'rest api ready to war.',
+    version: process.env.VERSION,
+    author: process.env.AUTHOR,
   });
 });
 
