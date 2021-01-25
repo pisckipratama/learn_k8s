@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-stateful-volume
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 5Gi
+  hostPath:
+    path: /mnt/data/pgsql
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-test
+  labels:
+    name: postgres-test
+spec:
+  # https://github.com/kubernetes/kubernetes/issues/69608
+  serviceName: postgres-test-service
+  replicas: 3
+  selector:
+    matchLabels:
+      name: postgres-test
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-test-volume-claim
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        volumeMode: Filesystem
+        resources:
+          requests:
+            storage: 1Gi
+  template:
+    metadata:
+      name: postgres-test
+      labels:
+        name: postgres-test
+    spec:
+      containers:
+        - name: postgres-test
+          image: postgres:12
+          env:
+            - name: POSTGRES_PASSWORD
+              value: nopassword
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-test-volume-claim
