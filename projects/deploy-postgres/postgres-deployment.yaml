@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-depl
+  labels:
+    app: postgres-depl
+    tier: database
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: postgres-pod
+      labels: 
+        app: postgres-depl
+    spec:
+       containers:
+       - name: postgres
+         image: postgres:12
+         ports:
+           - containerPort: 5432
+         env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: pg-dbname
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: pg-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: pg-password
+         volumeMounts:
+            - name: postgredb
+              mountPath: /var/lib/postgresql/data
+       volumes:
+         - name: postgresdb
+           persistentVolumeClaim:
+             claimName: postgres-pv-claim 
+  selector:
+    matchLabels:
+      app: postgres-depl
