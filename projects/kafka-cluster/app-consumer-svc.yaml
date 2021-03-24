@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: consumer-service
+  namespace: okedok
+  labels:
+    app: okedok-3rdparty
+spec:
+  ports:
+  - name: client
+    port: 80
+    protocol: TCP
+  selector:
+    app: okedok-3rdparty
