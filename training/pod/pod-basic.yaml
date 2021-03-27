@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: apps-a
+  labels:
+    env: staging
+spec:
+  containers:
+    - name: apps-a
+      image: nginx

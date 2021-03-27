@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webserver2-persistent
+spec:
+  containers:
+    - name: webserver3-persistent
+      image: nginx
+      ports:
+        - containerPort: 80
+          name: "http-server"
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: webserver2-persistent
+  volumes:
+    - name: webserver2-persistent
+      persistentVolumeClaim:
+        claimName: hostpath-pv-claim

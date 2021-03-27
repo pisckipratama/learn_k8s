@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: apps-a-selector
+  labels:
+    env: staging
+spec:
+  containers:
+    - name: apps-a
+      image: nginx
+  nodeSelector:
+    disk: ssd

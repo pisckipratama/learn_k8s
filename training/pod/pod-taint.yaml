@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: apps-a-taint
+  labels:
+    env: staging
+spec:
+  containers:
+    - name: apps-a
+      image: nginx
+  tolerations:
+    - key: "special"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"
