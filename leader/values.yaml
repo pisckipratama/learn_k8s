@@ -1,0 +1,8 @@
+postgresql:
+  postgresqlDatabase: faq
+  postgresqlUsername: postgres
+  postgresqlPassword: postgres
+  secretName: leader-postgresql
+  server: leader-postgresql
+  persistence:
+    enabled: false
